@@ -61,7 +61,6 @@ pytestdebug.log
 
 # Environments
 .env
-.env.*
 .venv/
 venv/
 ENV/
