@@ -12,8 +12,15 @@ motor = "^3.7.1"
 uvicorn = {extras = ["all"], version = "^0.41.0"}
 pytest = "^9.0.2"
 faker = "^40.11.0"
+pre-commit = "^4.5.1"
 
 
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
+[dependency-groups]
+dev = [
+    "bandit (>=1.9.4,<2.0.0)",
+    "ruff (>=0.15.6,<0.16.0)"
+]
