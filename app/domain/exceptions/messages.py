@@ -8,13 +8,12 @@ class TitleTooLongException(ApplicationException):
     text: str
 
     @property
-    def message(self):
-        return f'Слишком длинный текст сообщения {self.text[:255]}...'
+    def message(self) -> str:
+        return f"Слишком длинный текст сообщения {self.text[:255]}..."
 
 
 @dataclass(eq=False)
 class EmptyTextException(ApplicationException):
-
     @property
-    def message(self):
-        return 'Текст не может быть пустым.'
+    def message(self) -> str:
+        return "Текст не может быть пустым."

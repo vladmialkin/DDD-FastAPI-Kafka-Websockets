@@ -20,8 +20,10 @@ class Chat(BaseEntity):
 
     def add_message(self, message: Message):
         self.messages.add(message)
-        self.register_event(NewMessageReceivedEvent(
-            message_text = message.text.as_generic_type(),
-            chat_oid=self.oid,
-            message_oid=message.oid,
-        ))
+        self.register_event(
+            NewMessageReceivedEvent(
+                message_text=message.text.as_generic_type(),
+                chat_oid=self.oid,
+                message_oid=message.oid,
+            )
+        )
