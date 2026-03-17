@@ -7,17 +7,17 @@ from logic.commands.base import BaseCommand, CommandHandler
 from logic.exceptions.messages import ChatWithThatTitleAlreadyExistsException
 
 
-@dataclass(frozen=True)
+@dataclass
 class CreateChatCommand(BaseCommand):
     title: str
 
 
-@dataclass(frozen=True)
+@dataclass
 class CreateChatCommandHandler(CommandHandler[CreateChatCommand, Chat]):
     chat_repository: BaseChatRepository
 
     async def handle(self, command: CreateChatCommand) -> Chat:
-        if self.chat_repository.check_chat_exists_by_title(command.title):
+        if await self.chat_repository.check_chat_exists_by_title(command.title):
             raise ChatWithThatTitleAlreadyExistsException(command.title)
 
         title = Title(value=command.title)

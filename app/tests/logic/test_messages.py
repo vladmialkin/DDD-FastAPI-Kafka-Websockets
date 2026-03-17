@@ -11,10 +11,6 @@ async def test_create_chat_command_success(
     mediator: Mediator,
 ):
     # TODO: Добавить фейкер для генерации рандомных текстов
-    chat: Chat = (await mediator.handle_command(CreateChatCommand(title="TestTitle")))[
-        0
-    ]
+    chat: Chat = (await mediator.handle_command(CreateChatCommand(title="TestTitle")))[0]
 
-    assert chat_repository.check_chat_exists_by_title(
-        title=chat.title.as_generic_type()
-    )
+    assert await chat_repository.check_chat_exists_by_title(title=chat.title.as_generic_type())

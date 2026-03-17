@@ -26,7 +26,6 @@ class Chat(BaseEntity):
                 chat_oid=new_chat.oid, chat_title=new_chat.title.as_generic_type()
             )
         )
-
         return new_chat
 
     def add_message(self, message: Message):
