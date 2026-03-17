@@ -1,5 +1,6 @@
 from datetime import datetime
 import pytest
+from faker import Faker
 
 from domain.entities.messages import Message, Chat
 from domain.events.messages import NewMessageReceivedEvent
@@ -7,24 +8,24 @@ from domain.exceptions.messages import TitleTooLongException
 from domain.values.messages import Text, Title
 
 
-def test_create_message_success_short_text():
-    text = Text("Hello World")
+def test_create_message_success_short_text(faker: Faker,):
+    text = Text(faker.text(max_nb_chars=20))
     message = Message(text=text)
 
     assert message.text == text
     assert message.created_at.date() == datetime.today().date()
 
 
-def test_create_message_success_long_text():
-    text = Text("a" * 400)
+def test_create_message_success_long_text(faker: Faker,):
+    text = Text(faker.text(max_nb_chars=5000)[:500])
     message = Message(text=text)
 
     assert message.text == text
     assert message.created_at.date() == datetime.today().date()
 
 
-def test_create_chat_success():
-    title = Title("title")
+def test_create_chat_success(faker: Faker,):
+    title = Title(faker.text(max_nb_chars=20))
     chat = Chat(title=title)
 
     assert chat.title == title
@@ -32,16 +33,16 @@ def test_create_chat_success():
     assert chat.created_at.date() == datetime.today().date()
 
 
-def test_create_chat_title_too_long():
+def test_create_chat_title_too_long(faker: Faker,):
     with pytest.raises(TitleTooLongException):
-        Title("title" * 200)
+        Title(faker.text(max_nb_chars=5000)[:500])
 
 
-def test_add_chat_to_message():
-    text = Text("a" * 400)
+def test_add_chat_to_message(faker: Faker,):
+    text = Text(faker.text(max_nb_chars=5000)[500])
     message = Message(text=text)
 
-    title = Title("title")
+    title = Title(faker.text(max_nb_chars=20))
     chat = Chat(title=title)
 
     chat.add_message(message)
@@ -49,10 +50,10 @@ def test_add_chat_to_message():
     assert message in chat.messages
 
 
-def test_new_message_events():
-    text = Text("Hello World")
+def test_new_message_events(faker: Faker,):
+    text = Text(faker.text())
     message = Message(text=text)
-    title = Title("title")
+    title = Title(faker.text(max_nb_chars=20))
     chat = Chat(title=title)
 
     chat.add_message(message)
