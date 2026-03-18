@@ -1,5 +1,6 @@
 from dataclasses import dataclass, field
 from abc import ABC
+from datetime import datetime
 from uuid import uuid4
 from copy import copy
 
@@ -9,6 +10,7 @@ from domain.events.base import BaseEvent
 @dataclass(eq=False)
 class BaseEntity(ABC):
     oid: str = field(default_factory=lambda: str(uuid4()), kw_only=True)
+    created_at: datetime = field(default_factory=datetime.now, kw_only=True)
 
     _events: list[BaseEvent] = field(default_factory=list, kw_only=True)
 

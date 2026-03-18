@@ -9,14 +9,22 @@
 - Kafka
 - Docker
 - Websockets
-- MongoDB
+- MongoDB(motor)
 - Pytest
+- punq
+- pre-commit
+- httpx
+- Faker
 
 ## Команды
-    `make app` - запуск приложения и базы данных/инфраструктуры
-    `make app-logs` - вывод логов контейнера приложения
+    `make all` - запуск всех приложений
+    `make all-down` - выключение всех приложений
+    `make app` - запуск приложения
     `make app-down` - выключение приложения и всей инфраструктуры
+    `make app-logs` - вывод логов контейнера приложения
     `make app-shell` - переход в bash приложения
     `make test` - запуск тестов 
+    `make storages` - запуск БД
+    `make storages-down` - выключение БД 
 
 
