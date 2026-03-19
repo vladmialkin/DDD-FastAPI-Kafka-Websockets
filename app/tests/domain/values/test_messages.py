@@ -8,7 +8,9 @@ from domain.exceptions.messages import TitleTooLongException
 from domain.values.messages import Text, Title
 
 
-def test_create_message_success_short_text(faker: Faker,):
+def test_create_message_success_short_text(
+    faker: Faker,
+):
     text = Text(faker.text(max_nb_chars=20))
     message = Message(text=text)
 
@@ -16,7 +18,9 @@ def test_create_message_success_short_text(faker: Faker,):
     assert message.created_at.date() == datetime.today().date()
 
 
-def test_create_message_success_long_text(faker: Faker,):
+def test_create_message_success_long_text(
+    faker: Faker,
+):
     text = Text(faker.text(max_nb_chars=5000)[:500])
     message = Message(text=text)
 
@@ -24,7 +28,9 @@ def test_create_message_success_long_text(faker: Faker,):
     assert message.created_at.date() == datetime.today().date()
 
 
-def test_create_chat_success(faker: Faker,):
+def test_create_chat_success(
+    faker: Faker,
+):
     title = Title(faker.text(max_nb_chars=20))
     chat = Chat(title=title)
 
@@ -33,12 +39,16 @@ def test_create_chat_success(faker: Faker,):
     assert chat.created_at.date() == datetime.today().date()
 
 
-def test_create_chat_title_too_long(faker: Faker,):
+def test_create_chat_title_too_long(
+    faker: Faker,
+):
     with pytest.raises(TitleTooLongException):
         Title(faker.text(max_nb_chars=5000)[:500])
 
 
-def test_add_chat_to_message(faker: Faker,):
+def test_add_chat_to_message(
+    faker: Faker,
+):
     text = Text(faker.text(max_nb_chars=5000)[500])
     message = Message(text=text)
 
@@ -50,7 +60,9 @@ def test_add_chat_to_message(faker: Faker,):
     assert message in chat.messages
 
 
-def test_new_message_events(faker: Faker,):
+def test_new_message_events(
+    faker: Faker,
+):
     text = Text(faker.text())
     message = Message(text=text)
     title = Title(faker.text(max_nb_chars=20))
