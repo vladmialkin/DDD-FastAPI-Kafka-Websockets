@@ -3,14 +3,14 @@ from fastapi.routing import APIRouter
 from fastapi.exceptions import HTTPException
 from punq import Container
 
-from application.api.dependencies.containers import container
 from application.api.messages.schemas import (
     CreateChatRequestSchema,
     CreateChatResponseSchema, CreateMessageRequestSchema, CreateMessageResponseSchema,
+    ChatDetailSchema
 )
 from application.api.schemas import ErrorSchema
 from domain.exceptions.base import ApplicationException
-from logic import Mediator, CreateChatCommand, init_container
+from logic import Mediator, CreateChatCommand, init_container, GetChatDetailQuery
 from logic.commands.messages import CreateMessageCommand
 
 router = APIRouter(tags=["Chat"])
@@ -65,3 +65,26 @@ async def create_message_handler(
             status_code=status.HTTP_400_BAD_REQUEST, detail={'error': exception.message}
         )
     return CreateMessageResponseSchema.from_entity(message)
+
+
+@router.get(
+    "/{chat_oid}/",
+    status_code=status.HTTP_200_OK,
+    description="Получить информацию о чате и все сообщения в нем.",
+    responses={
+        status.HTTP_200_OK: {"model": ChatDetailSchema},
+        status.HTTP_400_BAD_REQUEST: {"model": ErrorSchema},
+    }
+)
+async def get_chat_with_messages_handler(
+        chat_oid: str,
+        container: Container = Depends((init_container))
+) -> ChatDetailSchema:
+    mediator = container.resolve(Mediator)
+    try:
+        chat = await mediator.handle_query(GetChatDetailQuery(chat_oid=chat_oid))
+    except ApplicationException as exception:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST, detail={'error': exception.message}
+        )
+    return ChatDetailSchema.from_entity(chat)
