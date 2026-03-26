@@ -27,11 +27,6 @@ class GetChatDetailQueryHandler(BaseQueryHandler):
     async def handler(self, query: GetChatDetailQuery) -> Chat:
         chat = await self.chats_repository.get_chat_by_oid(oid=query.chat_oid)
 
-        print(1111111111111111111111111111111111111111111111111111111111)
-        print(1111111111111111111111111111111111111111111111111111111111)
-        print(1111111111111111111111111111111111111111111111111111111111)
-        print(1111111111111111111111111111111111111111111111111111111111)
-
         if not chat:
             raise ChatNotFoundException(chat_oid=query.chat_oid)
 
